@@ -58,3 +58,26 @@ Output:
        Darren Fichardt                       282            0.00           0.00
            Jay Haas                          282            0.00           0.00
 ```
+
+### Debug
+
+Log can be written into the file `log.txt` and/or printed on the console.
+
+### Run Tests
+
+```shell
+$ python3 -m unittest -v tests/test_golf.py
+```
+
+## File Structure
+
+```
+📦gooolf
+ ┣ 📂tests
+ ┃ ┗ 📜test_golf.py
+ ┣ 📜golf.py
+ ┣ 📜log.py
+ ┗ 📜ratings.txt
+```
+- `tetris.py`: The data structure of golf and also the main program to initialize golf and run tournaments by **Monte Carlo** method.
+- `log.py`: Logging system. Three levels: `INFO`, `DEBUG` and `ERROR`.

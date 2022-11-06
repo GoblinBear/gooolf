@@ -1,4 +1,8 @@
 import random
+from log import Logger
+
+
+logger = Logger(enable_stream_handler=True)
 
 
 class Golf:
@@ -13,13 +17,32 @@ class Golf:
         self.win_fraction = []
         self.top_n_fraction = []
 
-        self.__read_input_file(filepath)
+        try:
+            self.__read_input_file(filepath)
+        except FileNotFoundError:
+            logger.error(f'FileNotFoundError: Input file not found.')
+        except ValueError:
+            logger.error(f'ValueError: Lines in input file too few.')
     
     def __read_input_file(self, filepath):
-        f = open(filepath, 'r')
-        lines = f.readlines()
+        lines = None
+        size = None
+
+        try:
+            with open(filepath, 'r') as f:
+                lines = f.readlines()
+                size = len(lines)
+                if size < 2:
+                    raise ValueError
+        except FileNotFoundError:
+            raise
+        except ValueError:
+            raise
+        finally:
+            f.close()
+
         del lines[0]
-        self.number_of_golfer = len(lines)
+        self.number_of_golfer = size - 1
 
         for line in lines:
             golfer = line[:-1].split()
@@ -94,6 +117,10 @@ class Golf:
             self.top_n_fraction.append(0)
     
     def run_monte_carlo(self):
+        if self.number_of_golfer < 1:
+            logger.error(f'No golfer data.')
+            return
+        
         for i in range(self.number_of_golfer):
             result = self.__monte_carlo(self.mean[i],
                                         self.standard_deviation[i])
@@ -105,6 +132,10 @@ class Golf:
         self.__calculate_top_n_fraction()
 
     def display_tournament(self):
+        if self.number_of_golfer < 1:
+            logger.error(f'No golfer data.')
+            return
+        
         golfer = 'Golfer'.center(30, ' ')
         score = 'Tournament Score'.center(18, ' ')
         win = 'Win Fraction'.center(16, ' ')
@@ -120,6 +151,11 @@ class Golf:
             print(f'{self.top_n_fraction[i]:15.2f}')
 
 
-golf = Golf(1000, 5, 'ratings.txt')
-golf.run_monte_carlo()
-golf.display_tournament()
+def main():
+    golf = Golf(1000, 5, 'ratings.txt')
+    golf.run_monte_carlo()
+    golf.display_tournament()
+
+
+if __name__ == '__main__':
+    main()
