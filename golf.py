@@ -141,14 +141,15 @@ class Golf:
         win = 'Win Fraction'.center(16, ' ')
 
         print(f'{golfer}|{score}|{win}| Top {self.topn} Fraction')
-        print(''.center(85, '-'))
+        print(''.center(84, '-'))
 
         for i in range(self.number_of_golfer):
-            golfer_name = self.golfer_name[i].center(30, ' ')
-            print(f'{golfer_name}', end='')
-            print(f'{self.tournament_score[i]:18d}', end='')
-            print(f'{self.win_fraction[i]:16.2f}', end='')
-            print(f'{self.top_n_fraction[i]:15.2f}')
+            print(f'{self.golfer_name[i]: ^30}', end='')
+            print(f'{self.tournament_score[i]: ^18}', end='')
+            print(f'{self.win_fraction[i]: ^16.2f}', end='')
+            print(f'{self.top_n_fraction[i]: ^15.2f}', end='')
+            print('')
+            print(''.center(84, '-'))
 
 
 def main():
